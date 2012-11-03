@@ -1,0 +1,36 @@
+#! /usr/bin/env python
+
+"""
+Main window 
+"""
+import sys
+try:
+    import pygtk
+    pygtk.require("2.0")
+except:
+    pass
+try:
+    import gtk
+    import webkit
+except Exception as e:
+    print str(e)
+    sys.exit(1)
+
+PORT = 8000
+
+class MainWindow:
+    def __init__(self):
+        self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        if (self.window):
+            self.window.connect("destroy", gtk.main_quit)
+        web = webkit.WebView()
+        web.open('http://localhost:%s/html/network.html' % PORT)
+        web.show()
+        self.window.add(web)
+        self.window.show()
+
+if __name__ == "__main__":
+    import http_server
+    http_server.start_server(PORT)
+    win = MainWindow()
+    gtk.main()
